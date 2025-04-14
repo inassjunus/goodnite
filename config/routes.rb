@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   post "sessions/create"
   resources :users do
-    resources :clock_ins
+    patch "clock-out" => "clock_ins#update", on: :member
+    resources :clock_ins, path: "clock-ins", except: [ :update ]
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

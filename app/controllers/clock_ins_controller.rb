@@ -1,7 +1,7 @@
 class ClockInsController < ApplicationController
   include Authorization
   before_action :set_user
-  before_action :set_clock_in, only: %i[ show update destroy ]
+  before_action :set_clock_in, only: %i[ show destroy ]
 
   before_action :authorize_user
 
@@ -17,10 +17,11 @@ class ClockInsController < ApplicationController
     render :show, status: :ok
   end
 
-  # POST /clock_ins
-  # POST /clock_ins.json
+  # POST /clock_in
+  # POST /clock_in.json
   def create
     @clock_in = @user.clock_ins.build(clock_in_params)
+    @clock_in.clock_in_at = Time.now
 
     if @clock_in.save
       render :show, status: :created
@@ -29,10 +30,13 @@ class ClockInsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /clock_ins/1
-  # PATCH/PUT /clock_ins/1.json
+  # PATCH/PUT /clock-out
+  # PATCH/PUT /clock-out.json
   def update
-    if @clock_in.update(clock_in_params)
+    @clock_in = @user.clock_ins.last
+    @clock_in.clock_out_at = Time.now
+    @clock_in.duration = @clock_in.clock_out_at - @clock_in.clock_in_at
+    if @clock_in.save
       render :show, status: :ok
     else
       render json: @clock_in.errors, status: :unprocessable_entity
@@ -53,11 +57,16 @@ class ClockInsController < ApplicationController
   end
 
   def set_user
+    if action_name == "update"
+      @user = User.find(params.expect(:id))
+      return
+    end
+
     @user = User.find(params.expect(:user_id))
   end
 
   # Only allow a list of trusted parameters through.
   def clock_in_params
-    params.expect(clock_in: [ :user_id, :duration, :clock_in_at, :clock_out_at ])
+    { user_id: params.expect(:user_id) }
   end
 end

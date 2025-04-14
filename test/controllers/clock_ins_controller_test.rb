@@ -15,7 +15,7 @@ class ClockInsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create clock_in" do
     assert_difference("ClockIn.count") do
-      post user_clock_ins_url(@user), headers: @header_user, params: { clock_in: { clockin_at: @clock_in.clock_in_at, clockout_at: @clock_in.clock_out_at, duration: @clock_in.duration, user_id: @clock_in.user_id } }, as: :json
+      post user_clock_ins_url(@user), headers: @header_user, params: { user_id: @clock_in.user_id }, as: :json
     end
 
     assert_response :created
@@ -26,8 +26,8 @@ class ClockInsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should update clock_in" do
-    patch user_clock_in_url(@user, @clock_in), headers: @header_user, params: { clock_in: { clockin_at: @clock_in.clock_in_at, clockout_at: @clock_in.clock_out_at, duration: @clock_in.duration, user_id: @clock_in.user_id } }, as: :json
+  test "should perform clock out" do
+    patch clock_out_user_url(@user, @clock_in), headers: @header_user, params: { clock_in: { clockin_at: @clock_in.clock_in_at, clockout_at: @clock_in.clock_out_at, user_id: @clock_in.user_id } }, as: :json
     assert_response :success
   end
 
