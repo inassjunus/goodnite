@@ -5,7 +5,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     @user = users(:one)
   end
 
-   # POST /session/create
+  # POST /session/create
   test "should create session" do
     get sessions_create_url(@user), params: { user: { email: @user.email, password: "testpassword" } }, as: :json
     assert_response :success

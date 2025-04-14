@@ -2,7 +2,7 @@ class SessionsController < ApplicationController
   skip_before_action :authenticate_user, only: [ :create ]
 
   # Login (Generate JWT)
-   # POST /session/create
+  # POST /session/create
   def create
     @user = User.find_by(email: login_params[:email])
     if @user&.authenticate(login_params[:password])
