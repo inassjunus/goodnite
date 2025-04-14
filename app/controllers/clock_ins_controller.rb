@@ -5,20 +5,20 @@ class ClockInsController < ApplicationController
 
   before_action :authorize_user
 
-  # GET /clock_ins
-  # GET /clock_ins.json
+  # GET /users/1/clock_ins
+  # GET /users/1/clock_ins.json
   def index
     @clock_ins = @user.clock_ins
   end
 
-  # GET /clock_ins/1
-  # GET /clock_ins/1.json
+  # GET /users/1/clock_ins/1
+  # GET /users/1/clock_ins/1.json
   def show
     render :show, status: :ok
   end
 
-  # POST /clock_in
-  # POST /clock_in.json
+  # POST /users/1/clock_in
+  # POST /users/1/clock_in.json
   def create
     @clock_in = @user.clock_ins.build(clock_in_params)
     @clock_in.clock_in_at = Time.now
@@ -30,8 +30,8 @@ class ClockInsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /clock-out
-  # PATCH/PUT /clock-out.json
+  # PATCH /users/1/clock-out
+  # PATCH /users/1/clock-out.json
   def update
     @clock_in = @user.clock_ins.last
     @clock_in.clock_out_at = Time.now
@@ -43,10 +43,11 @@ class ClockInsController < ApplicationController
     end
   end
 
-  # DELETE /clock_ins/1
-  # DELETE /clock_ins/1.json
+  # DELETE /users/1/clock_ins/1
+  # DELETE /users/1/clock_ins/1.json
   def destroy
     @clock_in.destroy!
+    render json: { message: "OK" }, status: :ok
   end
 
   private

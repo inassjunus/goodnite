@@ -51,6 +51,7 @@ class UsersController < ApplicationController
   def destroy
     if @current_user.admin?
       @user.destroy!
+      render json: { message: "OK" }, status: :ok
     else
       render json: { error: "Unauthorized" }, status: :unauthorized
     end

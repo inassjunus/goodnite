@@ -88,7 +88,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       delete user_url(@user), headers: @header_admin, as: :json
     end
 
-    assert_response :no_content
+    assert_response :success
   end
 
   test "should not destroy user for normal user" do
