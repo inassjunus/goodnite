@@ -14,6 +14,7 @@ class ClockInsController < ApplicationController
   # GET /clock_ins/1
   # GET /clock_ins/1.json
   def show
+    render :show, status: :ok
   end
 
   # POST /clock_ins

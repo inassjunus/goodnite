@@ -9,6 +9,6 @@ class CreateClockIns < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :clock_ins, [:user_id, :clock_in_at, :duration]
+    add_index :clock_ins, [ :user_id, :clock_in_at, :duration ]
   end
 end

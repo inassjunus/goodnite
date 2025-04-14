@@ -1,6 +1,9 @@
 class UsersController < ApplicationController
+  include Authorization
+
   before_action :set_user, only: %i[ show update destroy ]
-  before_action :authorize, only: %i[ show update ]
+  before_action :authorize_admin, only: %i[ index destroy ]
+  before_action :authorize_user, only: %i[ show update ]
   skip_before_action :authenticate_user, only: [ :create ]
 
   # GET /users
@@ -17,7 +20,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    render json: @user
+    render :show, status: :ok, location: @user
   end
 
   # POST /users
@@ -58,14 +61,6 @@ class UsersController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_user
     @user = User.find(params.expect(:id))
-  end
-
-  # check if user can access the resource
-  def authorize
-    if !@current_user.admin? && @current_user.id != @user.id
-      render json: { error: "Unauthorized" }, status: :unauthorized
-      nil
-    end
   end
 
   # Only allow a list of trusted parameters through.

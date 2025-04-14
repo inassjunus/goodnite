@@ -2,21 +2,9 @@ require "test_helper"
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @user = users(:one)
-    token = Authentication.encode_jwt_token(user_id: @user.id)
-    @header = {
-      'Authorization': "Bearer #{token}"
-    }
-
-    @user_admin = users(:two)
-    token_admin = Authentication.encode_jwt_token(user_id: @user_admin.id)
-    @header_admin = {
-      'Authorization': "Bearer #{token_admin}"
-    }
-
-    @header_invalid = {
-      'Authorization': "Bearer aaa"
-    }
+    setup_user_auth
+    setup_admin_auth
+    setup_invalid_auth
   end
 
   # GET /users
@@ -26,7 +14,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should not get index for normal user" do
-    get users_url, headers: @header, as: :json
+    get users_url, headers: @header_user, as: :json
     assert_response 401
   end
 
@@ -54,7 +42,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   # GET /users/1
   test "should show user" do
-    get user_url(@user), headers: @header, as: :json
+    get user_url(@user), headers: @header_user, as: :json
     assert_response :success
   end
 
@@ -64,7 +52,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should not show other user for normal  user" do
-    get user_url(@user_admin), headers: @header, as: :json
+    get user_url(@user_admin), headers: @header_user, as: :json
     assert_response 401
   end
 
@@ -75,7 +63,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   # PATCH/PUT /users/1
   test "should update user" do
-    patch user_url(@user), headers: @header, params: { user: { email: @user.email, name: @user.name, password: "test", password_confirmation: "test" } }, as: :json
+    patch user_url(@user), headers: @header_user, params: { user: { email: @user.email, name: @user.name, password: "test", password_confirmation: "test" } }, as: :json
     assert_response :success
   end
 
@@ -85,7 +73,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should not update other user for normal  user" do
-    patch user_url(@user_admin), headers: @header, params: { user: { email: @user.email, name: @user.name, password: "test", password_confirmation: "test" } }, as: :json
+    patch user_url(@user_admin), headers: @header_user, params: { user: { email: @user.email, name: @user.name, password: "test", password_confirmation: "test" } }, as: :json
     assert_response 401
   end
 
@@ -105,7 +93,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should not destroy user for normal user" do
     assert_difference("User.count", 0) do
-      delete user_url(@user), headers: @header, as: :json
+      delete user_url(@user), headers: @header_user, as: :json
     end
 
     assert_response 401
