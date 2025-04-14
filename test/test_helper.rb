@@ -11,5 +11,27 @@ module ActiveSupport
     fixtures :all
 
     # Add more helper methods to be used by all tests here...
+    def setup_user_auth
+      @user = users(:one)
+      @header_user = setup_valid_auth(@user)
+    end
+
+    def setup_admin_auth
+      @user_admin = users(:two)
+      @header_admin = setup_valid_auth(@user_admin)
+    end
+
+    def setup_valid_auth(user)
+      token = Authentication.encode_jwt_token(user_id: user.id)
+      header_admin = {
+        'Authorization': "Bearer #{token}"
+      }
+    end
+
+    def setup_invalid_auth
+      @header_invalid = {
+        'Authorization': "Bearer aaa"
+      }
+    end
   end
 end
