@@ -3,6 +3,10 @@ Rails.application.routes.draw do
   resources :users do
     patch "clock-out" => "clock_ins#update", on: :member
     resources :clock_ins, path: "clock-ins", except: [ :update ]
+    resources :followings, only: [ :index ]
+    post "follow/:target_id" => "followings#create", on: :member, as: "follow"
+    get "followers" => "followings#followers", on: :member
+    delete "unfollow/:target_id" => "followings#destroy", on: :member, as: "unfollow"
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
