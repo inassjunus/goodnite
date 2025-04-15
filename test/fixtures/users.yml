@@ -11,3 +11,9 @@ two:
   name: myname2
   admin: true
   password_digest: $2a$14$yWjcGVzgVVBZHQV377NA2.R9.Uf7NPoBoHMsBaPboh552vuxhQV06
+
+three:
+  email: mytest3@email.com
+  name: myname3
+  admin: false
+  password_digest: $2a$14$yWjcGVzgVVBZHQV377NA2.R9.Uf7NPoBoHMsBaPboh552vuxhQV06
