@@ -8,7 +8,7 @@ class ClockInsController < ApplicationController
   # GET /users/1/clock_ins
   # GET /users/1/clock_ins.json
   def index
-    @pagy, @clock_ins = pagy(@user.clock_ins)
+    @pagy, @clock_ins = pagy(@user.clock_ins.order(clock_in_at: clock_in_sort_params))
   end
 
   # GET /users/1/clock_ins/1
@@ -69,5 +69,14 @@ class ClockInsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def clock_in_params
     { user_id: params.expect(:user_id) }
+  end
+
+  def clock_in_sort_params
+    if params[:sort] == "asc"
+      :asc
+    else
+      # sort by latest clock ins by default
+      :desc
+    end
   end
 end
