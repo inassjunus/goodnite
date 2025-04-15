@@ -8,7 +8,7 @@ class ClockInsController < ApplicationController
   # GET /users/1/clock_ins
   # GET /users/1/clock_ins.json
   def index
-    @clock_ins = @user.clock_ins
+    @pagy, @clock_ins = pagy(@user.clock_ins)
   end
 
   # GET /users/1/clock_ins/1
