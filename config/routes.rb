@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   post "sessions/create"
   resources :users do
     patch "clock-out" => "clock_ins#update", on: :member
-    resources :clock_ins, path: "clock-ins", except: [ :update ]
+    resources :clock_ins, path: "clock-ins", except: [ :update ] do
+      patch "clock-out" => "clock_ins#manual_update", on: :member
+    end
     resources :followings, only: [ :index ]
     post "follow/:target_id" => "followings#create", on: :member, as: "follow"
     get "followers" => "followings#followers", on: :member
