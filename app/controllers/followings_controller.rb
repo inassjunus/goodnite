@@ -20,7 +20,7 @@ class FollowingsController < ApplicationController
   # POST /follow
   # POST /follow.json
   def create
-    @following = @user.followings.build(following_params)
+    @following = @user.active_relationships.build(following_params)
 
     if @following.save
       render :show, status: :created
@@ -53,7 +53,7 @@ class FollowingsController < ApplicationController
   end
 
   def set_following
-    @following = @user.followings.where(target_id: params.expect(:target_id)).first
+    @following = @user.active_relationships.where(target_id: params.expect(:target_id)).first
   end
 
   # Only allow a list of trusted parameters through.

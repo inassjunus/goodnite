@@ -21,4 +21,22 @@ class ClockIn < ApplicationRecord
       errors.add(:clock_out_at, "Clock out time must come after clock in time")
     end
   end
+
+  def self.get_followings(user, options = {})
+    user_ids = user.followings.map(&:id)
+    query = {
+      user_id: user_ids,
+      clock_in_at: 7.days.ago...
+    }
+
+    if options[:exclude_unfinished]
+      query[:duration] = Range.new(1, nil)
+    end
+
+    duration_sort = :desc
+    if options[:duration_sort] == "asc"
+      duration_sort = :asc
+    end
+    clock_ins = ClockIn.where(query).order(duration: duration_sort)
+  end
 end
