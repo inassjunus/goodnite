@@ -86,7 +86,10 @@ class ClockInsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_clock_in
-    @clock_in = @user.clock_ins.find(params.expect(:id))
+    @clock_in = ClockIn.find(params.expect(:id))
+    if @clock_in.user_id != @user.id
+      render_error("Not Found", :not_found)
+    end
   end
 
   def set_user
