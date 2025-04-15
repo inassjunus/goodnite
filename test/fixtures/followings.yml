@@ -3,7 +3,3 @@
 one:
   user: one
   target: two
-
-two:
-  user: two
-  target: one

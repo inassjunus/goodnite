@@ -6,7 +6,6 @@ class FollowingsControllerTest < ActionDispatch::IntegrationTest
     setup_admin_auth
     setup_invalid_auth
     @following = followings(:one)
-    @following_admin = followings(:two)
   end
 
   test "should get index of followings" do
@@ -21,7 +20,7 @@ class FollowingsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create following" do
     assert_difference("Following.count") do
-      post follow_user_url(@user, @following.target_id), headers: @header_user, as: :json
+      post follow_user_url(@user_admin, @user.id), headers: @header_admin, as: :json
     end
 
     assert_response :created

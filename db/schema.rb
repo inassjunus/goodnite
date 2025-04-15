@@ -31,6 +31,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_14_122235) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["target_id"], name: "index_followings_on_target_id"
+    t.index ["user_id", "target_id"], name: "index_followings_on_user_id_and_target_id", unique: true
     t.index ["user_id"], name: "index_followings_on_user_id"
   end
 
