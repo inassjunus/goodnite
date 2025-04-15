@@ -7,8 +7,8 @@ Simple API-only Ruby on Rails application to let users track when they go to bed
 ## Endpoints
 
 See the endpoints served by Goodnite in this [Postman](https://www.postman.com/) collection
+- [Goodnite.postman_collection.json](https://github.com/user-attachments/files/19758578/Goodnite.postman_collection.json)
 - [Goodnite Local.postman_environment.json](https://github.com/user-attachments/files/19753864/Goodnite.Local.postman_environment.json)
-- [Goodnite.postman_collection.json](https://github.com/user-attachments/files/19753868/Goodnite.postman_collection.json)
 
 
 ## Technical Guidelines
