@@ -13,7 +13,7 @@ class UsersController < ApplicationController
       @pagy, @users = pagy(User.all)
       render json: @users
     else
-      render json: { error: "Unauthorized" }, status: :unauthorized
+      render_error("Unauthorized", :unauthorized)
     end
   end
 
@@ -32,7 +32,7 @@ class UsersController < ApplicationController
       @token = Authentication.encode_jwt_token(user_id: @user.id)
       render :create, status: :created
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render_error(@user.errors, :unprocessable_entity)
     end
   end
 
@@ -42,7 +42,7 @@ class UsersController < ApplicationController
     if @user.update(user_params)
       render :show, status: :ok, location: @user
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render_error(@user.errors, :unprocessable_entity)
     end
   end
 
@@ -53,7 +53,7 @@ class UsersController < ApplicationController
       @user.destroy!
       render json: { message: "OK" }, status: :ok
     else
-      render json: { error: "Unauthorized" }, status: :unauthorized
+      render_error("Unauthorized", :unauthorized)
     end
   end
 

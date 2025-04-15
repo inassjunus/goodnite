@@ -39,10 +39,10 @@ class ClockInsController < ApplicationController
     if @clock_in.save
       render :show, status: :created
     else
-      render json: @clock_in.errors, status: :unprocessable_entity
+      render_error(@clock_in.errors, :unprocessable_entity)
     end
   rescue ArgumentError
-    render json: { error: "Time format must be YYYY-MM-DD HH:MM" }, status: :unprocessable_entity
+    render_error("Time format must be YYYY-MM-DD HH:MM", :unprocessable_entity)
   end
 
   # set clock out time to the latest sleep
@@ -55,7 +55,7 @@ class ClockInsController < ApplicationController
     if @clock_in.save
       render :show, status: :ok
     else
-      render json: @clock_in.errors, status: :unprocessable_entity
+      render_error(@clock_in.errors, :unprocessable_entity)
     end
   end
 
@@ -69,10 +69,10 @@ class ClockInsController < ApplicationController
     if @clock_in.save
       render :show, status: :ok
     else
-      render json: @clock_in.errors, status: :unprocessable_entity
+      render_error(@clock_in.errors, :unprocessable_entity)
     end
   rescue ArgumentError
-    render json: { error: "Time format must be YYYY-MM-DD HH:MM" }, status: :unprocessable_entity
+    render_error("Time format must be YYYY-MM-DD HH:MM", :unprocessable_entity)
   end
 
   # DELETE /users/1/clock_ins/1

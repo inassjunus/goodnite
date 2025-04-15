@@ -25,7 +25,7 @@ class FollowingsController < ApplicationController
     if @following.save
       render :show, status: :created
     else
-      render json: @following.errors, status: :unprocessable_entity
+      render_error(@following.errors, :unprocessable_entity)
     end
   end
 
