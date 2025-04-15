@@ -100,6 +100,15 @@ cp env.sample .env
 ```
 Please double check that the database values are correct
 
+8. [OPTIONAL] Initialize app data
+```sh
+# with default limit, each limit is 20 by default
+bin/rails db:seed
+
+# with custom data limit
+bin/rails db:seed seed_user_limit=2 seed_clock_in_limit=1 seed_following_limit=1
+```
+
 ### Running the service
 
 1. You can run the service with this command
