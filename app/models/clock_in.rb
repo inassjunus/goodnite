@@ -23,7 +23,7 @@ class ClockIn < ApplicationRecord
   end
 
   def self.get_followings(user, options = {})
-    user_ids = user.followings.map(&:id)
+    user_ids = user.active_relationships.map(&:target_id)
     query = {
       user_id: user_ids,
       clock_in_at: 7.days.ago...
