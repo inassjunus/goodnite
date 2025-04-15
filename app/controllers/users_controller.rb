@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   def index
     if @current_user.admin?
       @pagy, @users = pagy(User.all)
-      render json: @users
+      render :index, status: :ok
     else
       render_error("Unauthorized", :unauthorized)
     end
