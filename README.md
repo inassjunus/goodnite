@@ -1,23 +1,137 @@
-# goodnite
+# Goodnite
 
-Simple application to let users track when they go to bed and when they wake up
+This service is take home technical test for a job application.
 
-Things you may want to cover:
+Simple API-only Ruby on Rails application to let users track when they go to bed and when they wake up
 
-* Ruby version
+## Endpoints
 
-* System dependencies
+See the endpoints served by Goodnite in this [Postman](https://www.postman.com/) collection
+- [Goodnite Local.postman_environment.json](https://github.com/user-attachments/files/19753864/Goodnite.Local.postman_environment.json)
+- [Goodnite.postman_collection.json](https://github.com/user-attachments/files/19753868/Goodnite.postman_collection.json)
 
-* Configuration
 
-* Database creation
+## Technical Guidelines
 
-* Database initialization
+### Code directory structure
 
-* How to run the test suite
+This app was initialized using this command:
 
-* Services (job queues, cache servers, search engines, etc.)
+```sh
+rails new goodnite --database=postgresql --skip-action-cable --skip-javascript --skip-action-mailer --skip-action-mailbox --skip-solid --api
+```
 
-* Deployment instructions
+Hence the directory structure complies with [Rails' standard directory structure](https://guides.rubyonrails.org/getting_started.html#directory-structure)
 
-* ...
+### Requirements
+
+Install these first, see the links for more details
+1. [Git](https://git-scm.com/downloads)
+2. [Ruby 3.4.2](https://guides.rubyonrails.org/install_ruby_on_rails.html#choose-your-operating-system)
+3. [PostgreSQL 14.7](https://www.postgresql.org/download/)
+4. [Rails 8.0.2](https://guides.rubyonrails.org/install_ruby_on_rails.html#installing-rails)
+
+### Application Initial Setup
+
+These steps only need to be done once.
+
+1. Clone this repo. This repo already utilized go.mod, so you can clone it anywhere
+```shell
+git clone git@github.com:inassjunus/goodnite.git
+```
+2. Install dependencies
+```shell
+make prepare
+```
+3. Make sure postgreSQL already running.
+
+```shell
+# check for postgres
+psql postgres
+```
+
+If they haven't, run them.
+```shell
+# starting redis in macOSX
+brew services start postgresql
+```
+Check the respective guidelines to find the right command for your local machine.
+
+4. Setup the database tables on postgreSQL
+```sh
+# open postgreSQL CLI
+psql postgres
+```
+
+```shell
+# inside the CLI create admin user if you don't have one yet
+CREATE ROLE goodnite WITH LOGIN PASSWORD <your password>;
+ALTER ROLE goodnite Superuser;
+```
+
+Login with the admin user
+
+```shell
+psql postgres -U goodnite
+```
+
+Create database inside the psql CLI
+```shell
+CREATE DATABASE goodnite_dev;
+CREATE DATABASE goodnite_test;
+```
+
+Exit the postgreSQL CLI when you are done
+
+5. Instal gems
+```sh
+gem install bundler
+bundle install
+```
+
+6. Run rails db migration
+```sh
+bin/rails db:migrate
+```
+
+7. Copy env.sample, then adjust the values with the your own environment details
+```shell
+cp env.sample .env
+```
+Please double check that the database values are correct
+
+### Running the service
+
+1. You can run the service with this command
+
+```shell
+bin/rails server
+
+```
+
+2. To make sure the application running, try running this command; it should return 200 OK response
+```shell
+curl localhost:3000/up
+```
+
+### Contribution
+#### Linting
+Please always ensure the code complies with the Ruby on Rails syntax convention by running this command before committing
+
+```sh
+bin/rubocop -a -f github
+```
+
+#### Testing
+
+##### Unit Test
+Run basic unit test, this is the test that MUST be ran before each commit:
+```shell
+bin/rails db:test:prepare test
+```
+
+##### Postman Test
+1. Import the Postman collection and environment from [here](https://github.com/inassjunus/goodnite?tab=readme-ov-file#endpoints) to you local Postman
+2. Run the service based on [these steps](https://github.com/inassjunus/goodnite?tab=readme-ov-file#running-the-service)
+3. Select a request and hit the `Send` button
+4. Observe the endpoint response and test result
