@@ -5,6 +5,8 @@ class ClockInsController < ApplicationController
 
   before_action :authorize_user
 
+  TIME_FORMAT = "%Y-%m-%d %H:%M"
+
   # GET /users/1/clock_ins
   # GET /users/1/clock_ins.json
   def index
@@ -20,14 +22,20 @@ class ClockInsController < ApplicationController
   # POST /users/1/clock_in
   # POST /users/1/clock_in.json
   def create
-    @clock_in = @user.clock_ins.build(clock_in_params)
+    @clock_in = @user.clock_ins.build
     @clock_in.clock_in_at = Time.now
+    if clock_in_param.present?
+      clock_in_param_parsed = Time.zone.strptime(clock_in_param, TIME_FORMAT)
+      @clock_in.clock_in_at = clock_in_param_parsed
+    end
 
     if @clock_in.save
       render :show, status: :created
     else
       render json: @clock_in.errors, status: :unprocessable_entity
     end
+  rescue ArgumentError
+    render json: { error: "Time format must be YYYY-MM-DD HH:MM" }, status: :unprocessable_entity
   end
 
   # set clock out time to the latest sleep
@@ -48,7 +56,7 @@ class ClockInsController < ApplicationController
   # PATCH /users/1/clock-ins/1/clock-out
   # PATCH /users/1/clock-ins/1/clock-out.json
   def manual_update
-    clock_out_param_parsed = Time.zone.strptime(clock_out_param, "%Y-%m-%d %H:%M")
+    clock_out_param_parsed = Time.zone.strptime(clock_out_param, TIME_FORMAT)
     @clock_in.clock_out_at = clock_out_param_parsed
     @clock_in.duration = @clock_in.clock_out_at - @clock_in.clock_in_at
     if @clock_in.save
@@ -84,8 +92,8 @@ class ClockInsController < ApplicationController
   end
 
   # Only allow a list of trusted parameters through.
-  def clock_in_params
-    { user_id: params.expect(:user_id) }
+  def clock_in_param
+    params[:clock_in_at]
   end
 
   def clock_out_param

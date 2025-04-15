@@ -47,6 +47,30 @@ class ClockInsControllerTest < ActionDispatch::IntegrationTest
     assert_response :created
   end
 
+  test "should perform manual clock in" do
+    assert_difference("ClockIn.count") do
+      post user_clock_ins_url(@user), params: { clock_in_at: "2025-04-14 10:11" }, headers: @header_user, as: :json
+    end
+
+    assert_response :created
+  end
+
+  test "should perform manual clock in for other user for admin" do
+    assert_difference("ClockIn.count") do
+      post user_clock_ins_url(@user), params: { clock_in_at: "2025-04-14 10:11" }, headers: @header_admin, as: :json
+    end
+
+    assert_response :created
+  end
+
+  test "should not perform manual clock in if param invalid" do
+    assert_difference("ClockIn.count", 0) do
+      post user_clock_ins_url(@user), params: { clock_in_at: "2025-04-14" }, headers: @header_admin, as: :json
+    end
+
+    assert_response 422
+  end
+
   test "should not create clock_in for other user for normal user" do
     assert_difference("ClockIn.count", 0) do
       post user_clock_ins_url(@user_admin), headers: @header_user, params: { user_id: @clock_in_admin.user_id }, as: :json
