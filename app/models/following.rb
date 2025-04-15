@@ -7,7 +7,7 @@ class Following < ApplicationRecord
 
   def different_user
     if user_id == target_id
-      errors.add(:target_id, "Can't follow you own account")
+      errors.add(:target_id, "Can't follow your own account")
     end
   end
 end

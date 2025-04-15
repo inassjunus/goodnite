@@ -7,7 +7,7 @@ class FollowingTest < ActiveSupport::TestCase
   end
 
   test "should create following" do
-    @following = @user_admin.followings.build({ target_id: @user.id })
+    @following = @user_admin.active_relationships.build({ target_id: @user.id })
     assert_difference("Following.count") do
       @following.save
     end
@@ -16,7 +16,7 @@ class FollowingTest < ActiveSupport::TestCase
   end
 
   test "should not create following if the target user is the same as current user" do
-    @following = @user.followings.build({ target_id: @user.id })
+    @following = @user.active_relationships.build({ target_id: @user.id })
     assert_difference("Following.count", 0) do
       @following.save
     end
@@ -25,7 +25,7 @@ class FollowingTest < ActiveSupport::TestCase
   end
 
   test "should not create following if the target user is already followed" do
-    @following = @user.followings.build({ target_id: @user_admin.id })
+    @following = @user.active_relationships.build({ target_id: @user_admin.id })
     assert_difference("Following.count", 0) do
       @following.save
     end
