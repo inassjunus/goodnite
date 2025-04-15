@@ -4,6 +4,12 @@ class ApplicationController < ActionController::API
   before_action :authenticate_user
   after_action { pagy_headers_merge(@pagy) if @pagy }
 
+  def render_error(error, http_status)
+    @error = error
+    @http_status = Rack::Utils.status_code(http_status)
+    render "errors/error", status: http_status
+  end
+
   private
 
   def authenticate_user
@@ -13,7 +19,7 @@ class ApplicationController < ActionController::API
     if decoded
       @current_user = User.find_by(id: decoded[:user_id])
     else
-      render json: { error: "Unauthorized" }, status: :unauthorized
+      render_error("Unauthorized", :unauthorized)
     end
   end
 end

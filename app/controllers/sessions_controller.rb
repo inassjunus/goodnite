@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
       @token = Authentication.encode_jwt_token(user_id: @user.id)
       render :create, status: :created
     else
-      render json: { error: "Invalid credentials" }, status: :unauthorized
+      render_error("Invalid credentials", :unauthorized)
     end
   end
 
