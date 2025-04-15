@@ -50,6 +50,10 @@ class ClockInsController < ApplicationController
   # PATCH /users/1/clock-out.json
   def update
     @clock_in = @user.clock_ins.last
+    if !@clock_in.present?
+      render_error("You haven't clock-in yet", :unprocessable_entity)
+      return
+    end
     @clock_in.clock_out_at = Time.now
     @clock_in.duration = @clock_in.clock_out_at - @clock_in.clock_in_at
     if @clock_in.save
