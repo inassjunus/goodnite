@@ -33,6 +33,27 @@ class ClockInsControllerTest < ActionDispatch::IntegrationTest
     assert_response 401
   end
 
+  # GET /users/1/clock_ins/followings
+  test "should get followings" do
+    get followings_user_clock_ins_url(@user), headers: @header_user, as: :json
+    assert_response :success
+  end
+
+  test "should get followings from other user for admin" do
+    get followings_user_clock_ins_url(@user), headers: @header_admin, as: :json
+    assert_response :success
+  end
+
+  test "should not get followings from other user for normal user" do
+    get followings_user_clock_ins_url(@user_admin), headers: @header_user, as: :json
+    assert_response 401
+  end
+
+  test "should not get followings if header invalid" do
+    get followings_user_clock_ins_url(@user), headers: @header_invalid, as: :json
+    assert_response 401
+  end
+
   # POST /users/1/clock_in
   test "should create clock_in" do
     assert_difference("ClockIn.count") do

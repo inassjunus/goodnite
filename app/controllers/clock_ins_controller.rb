@@ -7,10 +7,17 @@ class ClockInsController < ApplicationController
 
   TIME_FORMAT = "%Y-%m-%d %H:%M"
 
-  # GET /users/1/clock_ins
-  # GET /users/1/clock_ins.json
+  # GET /users/1/clock-ins
+  # GET /users/1/clock-ins.json
   def index
     @pagy, @clock_ins = pagy(@user.clock_ins.order(clock_in_at: clock_in_sort_params))
+  end
+
+  # GET /users/1/clock-ins/followings
+  # GET /users/1/clock-ins/followings.json
+  def followings
+    @pagy, @clock_ins = pagy(ClockIn.get_followings(@user, query_options))
+    render :index, status: :ok
   end
 
   # GET /users/1/clock_ins/1
@@ -98,6 +105,10 @@ class ClockInsController < ApplicationController
 
   def clock_out_param
     params.expect(:clock_out_at)
+  end
+
+  def query_options
+    params.permit(:exclude_unfinished, :duration_sort)
   end
 
   def clock_in_sort_params

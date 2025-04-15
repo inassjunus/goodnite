@@ -50,4 +50,20 @@ class ClockInTest < ActiveSupport::TestCase
 
     assert_equal 1, @clock_in.errors.count
   end
+
+  test "should return followings" do
+    @clock_ins = ClockIn.get_followings(@user_admin)
+
+    assert_not_equal 0, @clock_ins
+  end
+
+  test "should return followings with options" do
+    options = {
+      exclude_unfinished: true,
+      duration_sort: "asc"
+    }
+    @clock_ins = ClockIn.get_followings(@user_admin, options)
+
+    assert_not_equal 0, @clock_ins
+  end
 end
