@@ -7,6 +7,9 @@ class ClockInsControllerTest < ActionDispatch::IntegrationTest
     setup_invalid_auth
     @clock_in = clock_ins(:one)
     @clock_in_admin = clock_ins(:two)
+
+    @clock_out_at = (@clock_in.clock_in_at + 1.minute).strftime("%Y-%m-%d %H:%M")
+    @clock_out_at_admin = (@clock_in_admin.clock_in_at + 1.minute).strftime("%Y-%m-%d %H:%M")
   end
 
   # GET /users/1/clock_ins
@@ -131,27 +134,27 @@ class ClockInsControllerTest < ActionDispatch::IntegrationTest
 
   # PATCH /users/1/clock-ins/1/clock-out
   test "should perform manual clock out" do
-    patch clock_out_user_clock_in_url(@user, @clock_in), params: { clock_out_at: "2025-04-14 10:11" }, headers: @header_user, as: :json
+    patch clock_out_user_clock_in_url(@user, @clock_in), params: { clock_out_at: @clock_out_at }, headers: @header_user, as: :json
     assert_response :success
   end
 
   test "should perform manual clock out for other user for admin" do
-    patch clock_out_user_clock_in_url(@user, @clock_in), params: { clock_out_at: "2025-04-14 10:11" }, headers: @header_admin, as: :json
+    patch clock_out_user_clock_in_url(@user, @clock_in), params: { clock_out_at: @clock_out_at }, headers: @header_admin, as: :json
     assert_response :success
   end
 
   test "should not perform manual clock out if param invalid" do
-    patch clock_out_user_clock_in_url(@user, @clock_in), params: { clock_out_at: "2025-04-14" }, headers: @header_admin, as: :json
+    patch clock_out_user_clock_in_url(@user, @clock_in), params: { clock_out_at: "2025-11-11" }, headers: @header_admin, as: :json
     assert_response 422
   end
 
   test "should not perform manual clock out for other user for normal user" do
-    patch clock_out_user_clock_in_url(@user_admin, @clock_in_admin), params: { clock_out_at: "2025-04-14 10:11" }, headers: @header_user, as: :json
+    patch clock_out_user_clock_in_url(@user_admin, @clock_in_admin), params: { clock_out_at: @clock_out_at_admin }, headers: @header_user, as: :json
     assert_response 401
   end
 
   test "should not perform manual clock out for other user if header invalid" do
-    patch clock_out_user_clock_in_url(@user, @clock_in), params: { clock_out_at: "2025-04-14 10:11" }, headers: @header_invalid, as: :json
+    patch clock_out_user_clock_in_url(@user, @clock_in), params: { clock_out_at: @clock_out_at }, headers: @header_invalid, as: :json
     assert_response 401
   end
 
