@@ -1,7 +1,7 @@
 class ClockInsController < ApplicationController
   include Authorization
   before_action :set_user
-  before_action :set_clock_in, only: %i[ show destroy ]
+  before_action :set_clock_in, only: %i[ show destroy manual_update ]
 
   before_action :authorize_user
 
@@ -30,6 +30,7 @@ class ClockInsController < ApplicationController
     end
   end
 
+  # set clock out time to the latest sleep
   # PATCH /users/1/clock-out
   # PATCH /users/1/clock-out.json
   def update
@@ -41,6 +42,22 @@ class ClockInsController < ApplicationController
     else
       render json: @clock_in.errors, status: :unprocessable_entity
     end
+  end
+
+  # if user forgot to clock out on previous sleep session, they can manually set the clock out time on older clock ins data
+  # PATCH /users/1/clock-ins/1/clock-out
+  # PATCH /users/1/clock-ins/1/clock-out.json
+  def manual_update
+    clock_out_param_parsed = Time.zone.strptime(clock_out_param, "%Y-%m-%d %H:%M")
+    @clock_in.clock_out_at = clock_out_param_parsed
+    @clock_in.duration = @clock_in.clock_out_at - @clock_in.clock_in_at
+    if @clock_in.save
+      render :show, status: :ok
+    else
+      render json: @clock_in.errors, status: :unprocessable_entity
+    end
+  rescue ArgumentError
+    render json: { error: "Time format must be YYYY-MM-DD HH:MM" }, status: :unprocessable_entity
   end
 
   # DELETE /users/1/clock_ins/1
@@ -69,6 +86,10 @@ class ClockInsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def clock_in_params
     { user_id: params.expect(:user_id) }
+  end
+
+  def clock_out_param
+    params.expect(:clock_out_at)
   end
 
   def clock_in_sort_params

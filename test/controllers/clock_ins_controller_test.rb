@@ -105,6 +105,32 @@ class ClockInsControllerTest < ActionDispatch::IntegrationTest
     assert_response 401
   end
 
+  # PATCH /users/1/clock-ins/1/clock-out
+  test "should perform manual clock out" do
+    patch clock_out_user_clock_in_url(@user, @clock_in), params: { clock_out_at: "2025-04-14 10:11" }, headers: @header_user, as: :json
+    assert_response :success
+  end
+
+  test "should perform manual clock out for other user for admin" do
+    patch clock_out_user_clock_in_url(@user, @clock_in), params: { clock_out_at: "2025-04-14 10:11" }, headers: @header_admin, as: :json
+    assert_response :success
+  end
+
+  test "should not perform manual clock out if param invalid" do
+    patch clock_out_user_clock_in_url(@user, @clock_in), params: { clock_out_at: "2025-04-14" }, headers: @header_admin, as: :json
+    assert_response 422
+  end
+
+  test "should not perform manual clock out for other user for normal user" do
+    patch clock_out_user_clock_in_url(@user_admin, @clock_in_admin), params: { clock_out_at: "2025-04-14 10:11" }, headers: @header_user, as: :json
+    assert_response 401
+  end
+
+  test "should not perform manual clock out for other user if header invalid" do
+    patch clock_out_user_clock_in_url(@user, @clock_in), params: { clock_out_at: "2025-04-14 10:11" }, headers: @header_invalid, as: :json
+    assert_response 401
+  end
+
   # DELETE /users/1/clock_ins/1
   test "should destroy clock_in" do
     assert_difference("ClockIn.count", -1) do
