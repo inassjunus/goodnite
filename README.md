@@ -1,6 +1,6 @@
 # Goodnite
 
-This service is take home technical test for a job application.
+This service is a take-home technical test for a job application.
 
 Simple API-only Ruby on Rails application to let users track when they go to bed and when they wake up
 
@@ -25,7 +25,7 @@ Hence the directory structure complies with [Rails' standard directory structure
 
 ### Requirements
 
-Install these first, see the links for more details
+Install these first; see the links for more details
 1. [Git](https://git-scm.com/downloads)
 2. [Ruby 3.4.2](https://guides.rubyonrails.org/install_ruby_on_rails.html#choose-your-operating-system)
 3. [PostgreSQL 14.7](https://www.postgresql.org/download/)
@@ -43,7 +43,7 @@ git clone git@github.com:inassjunus/goodnite.git
 ```shell
 make prepare
 ```
-3. Make sure postgreSQL already running.
+3. Make sure PostgreSQL is already running.
 
 ```shell
 # check for postgres
@@ -57,9 +57,9 @@ brew services start postgresql
 ```
 Check the respective guidelines to find the right command for your local machine.
 
-4. Setup the database tables on postgreSQL
+4. Setup the database tables on PostgreSQL
 ```sh
-# open postgreSQL CLI
+# open PostgreSQL CLI
 psql postgres
 ```
 
@@ -83,7 +83,7 @@ CREATE DATABASE goodnite_test;
 
 Exit the postgreSQL CLI when you are done
 
-5. Instal gems
+5. Install gems
 ```sh
 gem install bundler
 bundle install
@@ -125,13 +125,19 @@ bin/rubocop -a -f github
 #### Testing
 
 ##### Unit Test
-Run basic unit test, this is the test that MUST be ran before each commit:
+Run basic unit tests. This is the test that MUST be run before each commit:
 ```shell
 bin/rails db:test:prepare test
 ```
 
 ##### Postman Test
-1. Import the Postman collection and environment from [here](https://github.com/inassjunus/goodnite?tab=readme-ov-file#endpoints) to you local Postman
+1. Import the Postman collection and environment from [here](https://github.com/inassjunus/goodnite?tab=readme-ov-file#endpoints) to your local Postman
 2. Run the service based on [these steps](https://github.com/inassjunus/goodnite?tab=readme-ov-file#running-the-service)
 3. Select a request and hit the `Send` button
 4. Observe the endpoint response and test result
+
+#### Troubleshooting
+
+If you encounter an unexpected issue, you can try these things:
+- Observe the server logs in terminal
+- Use `binding.pry` on the code. See [the doc](https://github.com/pry/pry?tab=readme-ov-file#runtime-invocation) for more info. Please don't forget to remove the line before committing
