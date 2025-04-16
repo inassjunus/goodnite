@@ -104,6 +104,11 @@ bin/rails db:seed
 bin/rails db:seed seed_user_limit=2 seed_clock_in_limit=1 seed_following_limit=1
 ```
 
+8. [Optional] Enable/disable action controller caching on development
+```sh
+bin/rails dev:cache
+```
+
 ### Running the service
 
 1. You can run the service with this command

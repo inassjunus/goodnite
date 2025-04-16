@@ -10,13 +10,13 @@ class ClockInsController < ApplicationController
   # GET /users/1/clock-ins
   # GET /users/1/clock-ins.json
   def index
-    @pagy, @clock_ins = pagy(@user.clock_ins.order(clock_in_at: clock_in_sort_params))
+    @pagy, @clock_ins = pagy_countless(@user.clock_ins.order(clock_in_at: clock_in_sort_params), countless_minimal: true)
   end
 
   # GET /users/1/clock-ins/followings
   # GET /users/1/clock-ins/followings.json
   def followings
-    @pagy, @clock_ins = pagy(ClockIn.get_followings(@user, query_options))
+    @pagy, @clock_ins = pagy_countless(ClockIn.get_followings(@user, query_options), countless_minimal: true)
     render :index, status: :ok
   end
 

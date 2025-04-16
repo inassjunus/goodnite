@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     if @current_user.admin?
-      @pagy, @users = pagy(User.all)
+      @pagy, @users = pagy_countless(User.all, countless_minimal: true)
       render :index, status: :ok
     else
       render_error("Unauthorized", :unauthorized)
