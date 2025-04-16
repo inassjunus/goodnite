@@ -34,6 +34,8 @@ gem "jwt"
 
 gem "pagy"
 
+gem "email_validator"
+
 group :development, :test do
   gem "pry"
 

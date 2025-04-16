@@ -32,6 +32,14 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :created
   end
 
+  test "should not create user if email invalid" do
+    assert_difference("User.count", 0) do
+      post users_url, params: { user: { email: "testemail.com", name: @user.name, password: "test", password_confirmation: "test" } }, as: :json
+    end
+
+    assert_response 422
+  end
+
   test "should not create user if required params are missing" do
     assert_difference("User.count", 0) do
       post users_url, params: { user: { name: @user.name, password: "test", password_confirmation: "test" } }, as: :json
