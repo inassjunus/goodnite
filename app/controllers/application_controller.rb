@@ -2,6 +2,7 @@ class ApplicationController < ActionController::API
   include Pagy::Backend
 
   before_action :authenticate_user
+  before_action :normalize_pagination_params
   after_action { pagy_headers_merge(@pagy) if @pagy }
 
   def render_error(error, http_status)
@@ -20,6 +21,16 @@ class ApplicationController < ActionController::API
       @current_user = User.find_by(id: decoded[:user_id])
     else
       render_error("Unauthorized", :unauthorized)
+    end
+  end
+
+  def normalize_pagination_params
+    if params[:page].to_i <= 0
+      params[:page] = "1"
+    end
+
+    if params[:limit].to_i <= 0
+      params[:limit] = "#{Pagy::DEFAULT[:limit]}"
     end
   end
 end
