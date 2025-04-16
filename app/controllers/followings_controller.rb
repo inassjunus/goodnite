@@ -7,13 +7,13 @@ class FollowingsController < ApplicationController
   # GET /followings
   # GET /followings.json
   def index
-    @pagy, @followings = pagy(@user.followings)
+    @pagy, @followings = pagy_countless(@user.followings, countless_minimal: true)
   end
 
   # GET /followers
   # GET /followers.json
   def followers
-    @pagy, @followings = pagy(@user.followers)
+    @pagy, @followings = pagy_countless(@user.followers, countless_minimal: true)
     render :index, status: :ok
   end
 
