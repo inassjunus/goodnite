@@ -4,6 +4,7 @@ class ClockInsControllerTest < ActionDispatch::IntegrationTest
   setup do
     setup_user_auth
     setup_admin_auth
+    setup_new_user_auth
     setup_invalid_auth
     @clock_in = clock_ins(:one)
     @clock_in_admin = clock_ins(:two)
@@ -134,23 +135,28 @@ class ClockInsControllerTest < ActionDispatch::IntegrationTest
 
   # PATCH /users/1/clock-out
   test "should perform clock out" do
-    patch clock_out_user_url(@user, @clock_in), headers: @header_user, as: :json
+    patch clock_out_user_url(@user), headers: @header_user, as: :json
     assert_response :success
   end
 
   test "should perform clock out for other user for admin" do
-    patch clock_out_user_url(@user, @clock_in), headers: @header_admin, as: :json
+    patch clock_out_user_url(@user), headers: @header_admin, as: :json
     assert_response :success
   end
 
   test "should not perform clock out for other user for normal user" do
-    patch clock_out_user_url(@user_admin, @clock_in), headers: @header_user, as: :json
+    patch clock_out_user_url(@user_admin), headers: @header_user, as: :json
     assert_response 401
   end
 
   test "should not perform clock out for other user if header invalid" do
     patch clock_out_user_url(@user, @clock_in), headers: @header_invalid, as: :json
     assert_response 401
+  end
+
+  test "should not perform clock out if user haven't clock-in yet" do
+    patch clock_out_user_url(@user_new), headers: @header_new_user, as: :json
+    assert_response 422
   end
 
   # PATCH /users/1/clock-ins/1/clock-out

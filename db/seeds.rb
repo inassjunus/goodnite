@@ -65,6 +65,18 @@ def initialize_followings(user_ids, limit)
   end
 end
 
+admin_name = SecureRandom.base64(3)
+puts "Creating an admin user #{admin_name}"
+params = {
+  name: "user-#{admin_name}",
+  email: "admin-#{admin_name}@email.com",
+  password: "pass#{admin_name}",
+  admin: true,
+  password_confirmation: "pass#{admin_name}"
+}
+admin_user = User.create(params)
+admin_user.save
+
 user_limit = 20
 if ENV["seed_user_limit"]&.to_i.present?
   user_limit = ENV["seed_user_limit"].to_i

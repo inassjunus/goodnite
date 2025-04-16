@@ -7,8 +7,8 @@ Simple API-only Ruby on Rails application to let users track when they go to bed
 ## Endpoints
 
 See the endpoints served by Goodnite in this [Postman](https://www.postman.com/) collection
+- [Goodnite.postman_collection.json](https://github.com/user-attachments/files/19767511/Goodnite.postman_collection.json)
 - [Goodnite Local.postman_environment.json](https://github.com/user-attachments/files/19753864/Goodnite.Local.postman_environment.json)
-- [Goodnite.postman_collection.json](https://github.com/user-attachments/files/19753868/Goodnite.postman_collection.json)
 
 
 ## Technical Guidelines
@@ -39,17 +39,12 @@ These steps only need to be done once.
 ```shell
 git clone git@github.com:inassjunus/goodnite.git
 ```
-2. Install dependencies
-```shell
-make prepare
-```
-3. Make sure PostgreSQL is already running.
+2. Make sure PostgreSQL is already running.
 
 ```shell
 # check for postgres
 psql postgres
 ```
-
 If they haven't, run them.
 ```shell
 # starting redis in macOSX
@@ -57,7 +52,7 @@ brew services start postgresql
 ```
 Check the respective guidelines to find the right command for your local machine.
 
-4. Setup the database tables on PostgreSQL
+3. Setup the database tables on PostgreSQL
 ```sh
 # open PostgreSQL CLI
 psql postgres
@@ -83,29 +78,29 @@ CREATE DATABASE goodnite_test;
 
 Exit the postgreSQL CLI when you are done
 
-5. Install gems
+4. Install gems
 ```sh
 gem install bundler
 bundle install
 ```
 
-6. Run rails db migration
+5. Run rails db migration
 ```sh
 bin/rails db:migrate
 ```
 
-7. Copy env.sample, then adjust the values with the your own environment details
+6. Copy env.sample, then adjust the values with the your own environment details
 ```shell
 cp env.sample .env
 ```
 Please double check that the database values are correct
 
-8. [OPTIONAL] Initialize app data
+7. [OPTIONAL] Initialize app data
 ```sh
-# with default limit, each limit is 20 by default
+# initlalize with default limit, each limit is 20 by default
 bin/rails db:seed
 
-# with custom data limit
+# initlalize with custom data limit
 bin/rails db:seed seed_user_limit=2 seed_clock_in_limit=1 seed_following_limit=1
 ```
 

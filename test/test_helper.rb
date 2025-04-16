@@ -21,6 +21,11 @@ module ActiveSupport
       @header_admin = setup_valid_auth(@user_admin)
     end
 
+    def setup_new_user_auth
+      @user_new = users(:three)
+      @header_new_user = setup_valid_auth(@user_new)
+    end
+
     def setup_valid_auth(user)
       token = Authentication.encode_jwt_token(user_id: user.id)
       header_admin = {
