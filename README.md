@@ -89,7 +89,7 @@ bundle install
 bin/rails db:migrate
 ```
 
-6. Copy env.sample, then adjust the values with the your own environment details
+6. Copy env.sample, then adjust the values with your own environment details
 ```shell
 cp env.sample .env
 ```
@@ -112,8 +112,9 @@ bin/rails db:seed seed_user_limit=2 seed_clock_in_limit=1 seed_following_limit=1
 bin/rails server
 
 ```
+The app will be accessible in `localhost:3000` by default
 
-2. To make sure the application running, try running this command; it should return 200 OK response
+2. To make sure the application is running, try executing this command; it should return 200 OK response
 ```shell
 curl localhost:3000/up
 ```
