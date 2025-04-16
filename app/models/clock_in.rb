@@ -29,7 +29,7 @@ class ClockIn < ApplicationRecord
       clock_in_at: 7.days.ago...
     }
 
-    if options[:exclude_unfinished]
+    if options[:exclude_unfinished] == "true"
       query[:duration] = Range.new(1, nil)
     end
 
